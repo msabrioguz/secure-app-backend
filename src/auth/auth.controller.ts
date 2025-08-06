@@ -18,24 +18,10 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  register(
-    @Body() registerDto: RegisterDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const { accessToken, refreshToken } =
-      await this.authService.register(registerDto);
-
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      path: '/',
-    });
-
-    return { access_token: accessToken };
+  register(@Body('email') email: string, @Body('password') password: string) {
+    return this.authService.register(email, password);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
     @Body() loginDto: LoginDto,
