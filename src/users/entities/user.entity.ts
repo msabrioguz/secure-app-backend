@@ -20,6 +20,6 @@ export class User {
   @Column({ default: 'user' })
   role: string;
 
-  @Column()
+  @Column({ default: '' })
   refreshToken: string;
 }
