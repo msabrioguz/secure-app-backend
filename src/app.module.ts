@@ -11,8 +11,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({ cache: true, isGlobal: true, load: [] }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        ...configService.get('database'),
+      useFactory: async (configService: ConfigService) => ({
+        ...(await configService.get('database')),
       }),
       inject: [ConfigService],
     }),
