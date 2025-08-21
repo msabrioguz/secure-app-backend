@@ -5,10 +5,15 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DatabaseConfig } from '_common/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ cache: true, isGlobal: true, load: [] }),
+    ConfigModule.forRoot({
+      cache: true,
+      isGlobal: true,
+      load: [DatabaseConfig],
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
