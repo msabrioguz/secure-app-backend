@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -27,5 +27,23 @@ export class UsersService {
   async findByEmail(email: string): Promise<User | undefined> {
     const user = await this.usersRepository.findOne({ where: { email } });
     return user ?? undefined;
+  }
+
+  async findById(id: number): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('Kullanıcı bulunamadı');
+    }
+    return user;
+  }
+
+  async updateRefreshToken(userId: number, refreshToken: string) {
+    await this.usersRepository.update(userId, { refreshToken: refreshToken });
+  }
+
+  async removeRefreshToken(userId: number) {
+    await this.usersRepository.update(userId, {
+      refreshToken: '',
+    });
   }
 }
