@@ -4,16 +4,19 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class JwtRefreshStrategy extends PassportStrategy(
+  Strategy,
+  'jwtRefreshToken',
+) {
   constructor(private readonly configService: ConfigService) {
-    const jwtSecret = configService.get<string>('jwt.secret');
-    if (!jwtSecret) {
+    const jwtRefreshSecret = configService.get<string>('jwt.refreshSecret');
+    if (!jwtRefreshSecret) {
       throw new Error('JWT secret is not defined in configuration');
     }
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtSecret, // Artık .env'den geliyor
+      secretOrKey: jwtRefreshSecret, // Artık .env'den geliyor
     });
   }
 

@@ -53,6 +53,7 @@ export class AuthService {
 
   async refreshTokens(refreshToken: string) {
     try {
+      console.log('Refresh token received:', refreshToken);
       const payload = this.jwtService.verify<{
         sub: number;
         email: string;

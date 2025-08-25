@@ -46,4 +46,8 @@ export class UsersService {
       refreshToken: '',
     });
   }
+
+  async getUserCount(): Promise<number> {
+    return this.usersRepository.count();
+  }
 }

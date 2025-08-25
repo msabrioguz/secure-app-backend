@@ -1,5 +1,6 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { UsersService } from './users.service';
 
 interface User {
   id: number;
@@ -13,9 +14,16 @@ interface AuthenticatedRequest extends Request {
 
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getProfile(@Request() req: AuthenticatedRequest): User {
     return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('GetUserCount')
+  getUserCount(): Promise<number> {
+    return this.usersService.getUserCount();
   }
 }

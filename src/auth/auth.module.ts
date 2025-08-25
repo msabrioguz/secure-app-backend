@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import jwtConfig from '_common/config/jwt.config';
+import { JwtRefreshStrategy } from './refresh-token.strategy';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import jwtConfig from '_common/config/jwt.config';
       }),
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, JwtRefreshStrategy],
   controllers: [AuthController],
   exports: [JwtModule],
 })
