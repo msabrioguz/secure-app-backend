@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { GetUser } from 'src/common/decorators/get-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -39,9 +40,9 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
   @Post('logout')
-  logout(@Body('userId') userId: number) {
-    console.log('Logout userId:', userId);
+  logout(@GetUser('id') userId: number) {
     return this.authService.logout(userId);
   }
 }
