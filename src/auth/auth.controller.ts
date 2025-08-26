@@ -37,7 +37,6 @@ export class AuthController {
   // @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   refresh(@Body('refreshToken') refreshToken: string) {
-    console.log('Refresh token in controller:', refreshToken);
     return this.authService.refreshTokens(refreshToken);
   }
 

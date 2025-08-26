@@ -15,6 +15,12 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  birthDate: Date;
+
+  @Column({ nullable: true })
+  phoneNumber: string;
+
   @Column({ default: 'user' })
   role: string;
 
