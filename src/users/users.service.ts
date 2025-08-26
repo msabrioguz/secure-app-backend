@@ -59,8 +59,8 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('Kullanıcı bulunamadı');
     }
-    const { id, email, name, surname, role } = user;
-    return { id, email, name, surname, role };
+    const { id, email, name, surname, role, phoneNumber, birthDate } = user;
+    return { id, email, name, surname, role, phoneNumber, birthDate };
   }
 
   async updateProfile(userId: number, updateData: Partial<User>) {
