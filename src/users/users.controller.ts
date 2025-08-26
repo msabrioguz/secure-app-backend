@@ -1,4 +1,11 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Request,
+  Patch,
+  Body,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { GetUser } from 'src/common/decorators/get-user.decorator';
@@ -29,8 +36,17 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('GetProfile')
+  @Get('Profile')
   getProfilePage(@GetUser('id') userId: number) {
     return this.usersService.getProfile(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('Profile')
+  updateProfile(
+    @Body() updateData: Partial<User>,
+    @GetUser('id') userId: number,
+  ) {
+    return this.usersService.updateProfile(userId, updateData);
   }
 }

@@ -50,6 +50,7 @@ export class UsersService {
   async getUserCount(): Promise<number> {
     return this.usersRepository.count();
   }
+
   async getProfile(userId: number) {
     if (!userId) {
       throw new NotFoundException('Kullanıcı bulunamadı');
@@ -60,5 +61,14 @@ export class UsersService {
     }
     const { id, email, name, surname, role } = user;
     return { id, email, name, surname, role };
+  }
+
+  async updateProfile(userId: number, updateData: Partial<User>) {
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('Kullanıcı bulunamadı');
+    }
+    Object.assign(user, updateData);
+    return this.usersRepository.save(user);
   }
 }
