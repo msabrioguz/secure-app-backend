@@ -7,7 +7,7 @@ export class BaseResponse<T> {
 
   constructor(
     success: boolean,
-    message: ResponseMessages.SUCCESS,
+    message: ResponseMessages = ResponseMessages.SUCCESS,
     data: T | null = null,
   ) {
     this.success = success;
