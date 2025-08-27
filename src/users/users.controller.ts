@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { UsersService } from './users.service';
-import { GetUser } from 'src/common/decorators/get-user.decorator';
+import { GetUser } from '_common/decorators/get-user.decorator';
 
 interface User {
   id: number;

@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
-import { GetUser } from 'src/common/decorators/get-user.decorator';
+import { GetUser } from '_common/decorators/get-user.decorator';
 // import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
 
 @Controller('auth')
