@@ -1,0 +1,32 @@
+export enum ResponseMessages {
+  SUCCESS = 'Request was successful.',
+  FAILURE = 'Request failed.',
+
+  USER_CREATED = 'User created successfully.',
+  USER_UPDATED = 'User updated successfully.',
+  USER_DELETED = 'User deleted successfully.',
+  USER_NOT_FOUND = 'User not found.',
+  INVALID_CREDENTIALS = 'Invalid credentials.',
+  UNAUTHORIZED = 'Unauthorized access.',
+  FORBIDDEN = 'Forbidden access.',
+  SERVER_ERROR = 'Internal server error.',
+  BAD_REQUEST = 'Bad request.',
+  OPERATION_SUCCESSFUL = 'Operation completed successfully.',
+  OPERATION_FAILED = 'Operation failed.',
+
+  DATA_RETRIEVED = 'Data retrieved successfully.',
+  DATA_NOT_FOUND = 'Data not found.',
+
+  ITEM_ADDED = 'Item added successfully.',
+  ITEM_REMOVED = 'Item removed successfully.',
+  ITEM_UPDATED = 'Item updated successfully.',
+
+  EMAIL_SENT = 'Email sent successfully.',
+  EMAIL_FAILED = 'Failed to send email.',
+  PASSWORD_RESET = 'Password reset successfully.',
+  PASSWORD_RESET_FAILED = 'Password reset failed.',
+  ACCOUNT_LOCKED = 'Account has been locked.',
+  ACCOUNT_UNLOCKED = 'Account has been unlocked.',
+  SESSION_EXPIRED = 'Session has expired. Please log in again.',
+  INVALID_TOKEN = 'Invalid token provided.',
+}
