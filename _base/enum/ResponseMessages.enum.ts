@@ -1,6 +1,9 @@
 export enum ResponseMessages {
   SUCCESS = 'Request was successful.',
   FAILURE = 'Request failed.',
+  ERROR = 'An error occurred.',
+  NOT_FOUND = 'Sayfa bulunamadı.',
+  INTERNAL_SERVER_ERROR = 'Internal server error.',
 
   USER_CREATED = 'User created successfully.',
   USER_UPDATED = 'User updated successfully.',
@@ -9,7 +12,6 @@ export enum ResponseMessages {
   INVALID_CREDENTIALS = 'Invalid credentials.',
   UNAUTHORIZED = 'Unauthorized access.',
   FORBIDDEN = 'Forbidden access.',
-  SERVER_ERROR = 'Internal server error.',
   BAD_REQUEST = 'Bad request.',
   OPERATION_SUCCESSFUL = 'Operation completed successfully.',
   OPERATION_FAILED = 'Operation failed.',
