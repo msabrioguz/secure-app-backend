@@ -6,14 +6,21 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AppService } from './app.service';
+import { BaseResponse } from '_base/response/base.response';
+import { ResponseMessages } from '_base/enum/ResponseMessages.enum';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getHello() {
+    const users = [
+      { name: 'Mustafa', age: 30, city: 'Istanbul' },
+      { name: 'John', age: 25, city: 'New York' },
+      { name: 'Jane', age: 28, city: 'London' },
+    ];
+    return new BaseResponse(undefined, true, ResponseMessages.SUCCESS, users);
   }
 
   @Get('health')

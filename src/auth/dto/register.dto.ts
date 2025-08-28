@@ -1,3 +1,4 @@
+import { ValidationMessages } from '_base/enum/ValidationMessages.enum';
 import {
   IsEmail,
   IsNotEmpty,
@@ -7,12 +8,12 @@ import {
 } from 'class-validator';
 
 export class RegisterDto {
-  @IsEmail()
+  @IsEmail({}, { message: ValidationMessages.EMAIL_ISEMAIL })
   email: string;
 
-  @IsString()
-  @MinLength(6)
-  @MaxLength(32)
+  @IsString({ message: ValidationMessages.PASSWORD_ISSTRING })
+  @MinLength(6, { message: ValidationMessages.PASSWORD_ISMIN })
+  @MaxLength(32, { message: ValidationMessages.PASSWORD_ISMAX })
   password: string;
 
   @IsString()
