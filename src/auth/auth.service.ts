@@ -4,6 +4,8 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { User } from 'src/users/entities/user.entity';
+import { BaseResponse } from '_base/response/base.response';
+import { ResponseMessages } from '_base/enum/ResponseMessages.enum';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +22,8 @@ export class AuthService {
     surname: string,
   ) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    return this.usersService.create(email, hashedPassword, name, surname);
+    await this.usersService.create(email, hashedPassword, name, surname);
+    return new BaseResponse(201, true, ResponseMessages.USER_CREATED);
   }
 
   async login(email: string, password: string) {
@@ -32,7 +35,7 @@ export class AuthService {
 
     const tokens = await this.generateTokens(user);
     await this.usersService.updateRefreshToken(user.id, tokens.refresh_token);
-    return tokens;
+    return new BaseResponse(200, true, ResponseMessages.SUCCESS, tokens);
   }
 
   async generateTokens(user: User) {
@@ -70,7 +73,7 @@ export class AuthService {
       const tokens = await this.generateTokens(user);
       await this.usersService.updateRefreshToken(user.id, tokens.refresh_token);
 
-      return tokens;
+      return new BaseResponse(200, true, ResponseMessages.SUCCESS, tokens);
     } catch {
       throw new UnauthorizedException('Refresh token doğrulanamadı');
     }
@@ -78,6 +81,6 @@ export class AuthService {
 
   async logout(userId: number) {
     await this.usersService.removeRefreshToken(userId); // TODO: userId boş gelebiliyor. Bunu düzelt.
-    return { message: 'Başarıyla çıkış yapıldı' };
+    return new BaseResponse(200, true, ResponseMessages.LOGOUT);
   }
 }

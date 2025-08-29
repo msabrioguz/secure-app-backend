@@ -16,11 +16,11 @@ export class RegisterDto {
   @MaxLength(32, { message: ValidationMessages.PASSWORD_ISMAX })
   password: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: ValidationMessages.NAME_ISSTRING })
+  @IsNotEmpty({ message: ValidationMessages.NAME_ISNOTEMPTY })
   name: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: ValidationMessages.SURNAME_ISSTRING })
+  @IsNotEmpty({ message: ValidationMessages.SURNAME_ISNOTEMPTY })
   surname: string;
 }

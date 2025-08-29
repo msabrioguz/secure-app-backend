@@ -3,6 +3,10 @@ export enum ValidationMessages {
   NAME_ISSTRING = 'İsim alanı metin olmalıdır.',
   NAME_ISMIN = 'İsim alanı en az 2 karakter olmalıdır.',
   NAME_ISMAX = 'İsim alanı en fazla 50 karakter olmalıdır.',
+  SURNAME_ISNOTEMPTY = 'Soyisim alanı boş olamaz.',
+  SURNAME_ISSTRING = 'Soyisim alanı metin olmalıdır.',
+  SURNAME_ISMIN = 'Soyisim alanı en az 2 karakter olmalıdır.',
+  SURNAME_ISMAX = 'Soyisim alanı en fazla 50 karakter olmalıdır.',
   EMAIL_ISNOTEMPTY = 'Email alanı boş olamaz.',
   EMAIL_ISEMAIL = 'Geçersiz email formatı.',
   PASSWORD_ISNOTEMPTY = 'Parola alanı boş olamaz.',
@@ -10,4 +14,6 @@ export enum ValidationMessages {
   PASSWORD_ISMAX = 'Parola en fazla $constraint1 karakter olmalıdır.',
   PASSWORD_ISSTRING = 'Parola metin olmalıdır.',
   ROLE_ISNOTEMPTY = 'Rol alanı boş olamaz.',
+  RESRESH_TOKEN_ISNOTEMPTY = 'Refresh token alanı boş olamaz.',
+  RESRESH_TOKEN_ISSTRING = 'Refresh token metin olmalıdır.',
 }

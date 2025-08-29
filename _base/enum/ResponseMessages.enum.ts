@@ -5,7 +5,7 @@ export enum ResponseMessages {
   NOT_FOUND = 'Sayfa bulunamadı.',
   INTERNAL_SERVER_ERROR = 'Internal server error.',
 
-  USER_CREATED = 'User created successfully.',
+  USER_CREATED = 'Kullanıcı başarıyla oluşturuldu.',
   USER_UPDATED = 'User updated successfully.',
   USER_DELETED = 'User deleted successfully.',
   USER_NOT_FOUND = 'User not found.',
@@ -31,4 +31,5 @@ export enum ResponseMessages {
   ACCOUNT_UNLOCKED = 'Account has been unlocked.',
   SESSION_EXPIRED = 'Session has expired. Please log in again.',
   INVALID_TOKEN = 'Invalid token provided.',
+  LOGOUT = 'Logged out successfully.',
 }
