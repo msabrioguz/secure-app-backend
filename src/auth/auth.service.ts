@@ -73,7 +73,7 @@ export class AuthService {
       const tokens = await this.generateTokens(user);
       await this.usersService.updateRefreshToken(user.id, tokens.refresh_token);
 
-      return new BaseResponse(200, true, ResponseMessages.SUCCESS, tokens);
+      return tokens;
     } catch {
       throw new UnauthorizedException('Refresh token doğrulanamadı');
     }
