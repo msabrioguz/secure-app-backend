@@ -37,7 +37,7 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   refresh(@Body('refreshToken') refreshToken: string) {
-    console.log('Refresh token received:', refreshToken);
+    console.log('Refresh token received:', refreshToken); // TODO: Bu satır kaldırılacak
     return this.authService.refreshTokens(refreshToken);
   }
 
