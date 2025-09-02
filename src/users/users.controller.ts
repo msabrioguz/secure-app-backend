@@ -7,7 +7,6 @@ import {
   Body,
   UseInterceptors,
   Post,
-  Req,
   UploadedFile,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
@@ -78,9 +77,13 @@ export class UsersController {
       },
     }),
   )
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  uploadProfilePic(@UploadedFile() file: Express.Multer.File, @Req() req) {
+  async uploadProfilePic(
+    @UploadedFile() file: Express.Multer.File,
+    @GetUser('id') userId: number,
+  ) {
     // Burada DB'de user tablosuna path kaydedebilirsiniz
+    const filePath = `/uploads/avatars/${file.filename}`;
+    await this.usersService.updateProfilePic(userId, filePath);
     return {
       message: 'Profile picture uploaded successfully',
       filePath: `/uploads/avatars/${file.filename}`,

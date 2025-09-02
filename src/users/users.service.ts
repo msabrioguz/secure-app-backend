@@ -59,8 +59,26 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('Kullanıcı bulunamadı');
     }
-    const { id, email, name, surname, role, phoneNumber, birthDate } = user;
-    return { id, email, name, surname, role, phoneNumber, birthDate };
+    const {
+      id,
+      email,
+      name,
+      surname,
+      role,
+      phoneNumber,
+      birthDate,
+      profilePic,
+    } = user;
+    return {
+      id,
+      email,
+      name,
+      surname,
+      role,
+      phoneNumber,
+      birthDate,
+      profilePic,
+    };
   }
 
   async updateProfile(userId: number, updateData: Partial<User>) {
@@ -69,6 +87,15 @@ export class UsersService {
       throw new NotFoundException('Kullanıcı bulunamadı');
     }
     Object.assign(user, updateData);
+    return this.usersRepository.save(user);
+  }
+
+  async updateProfilePic(userId: number, profilePicPath: string) {
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('Kullanıcı bulunamadı');
+    }
+    user.profilePic = profilePicPath;
     return this.usersRepository.save(user);
   }
 }
