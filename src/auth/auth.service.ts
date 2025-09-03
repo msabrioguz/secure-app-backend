@@ -39,7 +39,12 @@ export class AuthService {
   }
 
   async generateTokens(user: User) {
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      profilePic: user.profilePic,
+      role: user.role,
+    };
 
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('jwt.secret'),
@@ -59,6 +64,7 @@ export class AuthService {
       const payload = this.jwtService.verify<{
         sub: number;
         email: string;
+        profilePic: string;
         role: string;
       }>(refreshToken, {
         secret: this.configService.get('jwt.refreshSecret'),

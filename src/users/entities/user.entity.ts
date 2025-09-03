@@ -27,6 +27,6 @@ export class User extends BaseEntity {
   @Column({ default: 'user' })
   role: string;
 
-  @Column({ default: '' })
+  @Column({ type: 'longtext' })
   refreshToken: string;
 }

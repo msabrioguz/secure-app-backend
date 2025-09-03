@@ -15,15 +15,10 @@ import { GetUser } from '_common/decorators/get-user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-
-interface User {
-  id: number;
-  username: string;
-  // add other user properties as needed
-}
+import { IUser } from '_common/interfaces/IUser.interface';
 
 interface AuthenticatedRequest extends Request {
-  user: User;
+  user: IUser;
 }
 
 @Controller('users')
@@ -31,7 +26,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  getProfile(@Request() req: AuthenticatedRequest): User {
+  getProfile(@Request() req: AuthenticatedRequest): IUser {
     return req.user;
   }
 
@@ -50,7 +45,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Patch('Profile')
   updateProfile(
-    @Body() updateData: Partial<User>,
+    @Body() updateData: Partial<IUser>,
     @GetUser('id') userId: number,
   ) {
     return this.usersService.updateProfile(userId, updateData);
