@@ -26,9 +26,15 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  getProfile(@Request() req: AuthenticatedRequest): IUser {
-    return req.user;
+  async getProfile(@Request() req: AuthenticatedRequest): Promise<IUser> {
+    return await this.usersService.getProfile(req.user.id);
   }
+
+  // @UseGuards(JwtAuthGuard)
+  // @Get('me')
+  // getProfile(@Request() req: AuthenticatedRequest): IUser {
+  //   return req.user;
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get('GetUserCount')

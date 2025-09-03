@@ -1,8 +1,10 @@
 export interface IUser {
   id: number;
-  username: string;
   email: string;
   name: string;
   surname: string;
-  profilPic?: string;
+  role: string;
+  phoneNumber?: string;
+  birthDate?: Date;
+  profilePic?: string;
 }

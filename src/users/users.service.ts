@@ -2,6 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { IUser } from '_common/interfaces/IUser.interface';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class UsersService {
@@ -51,7 +54,7 @@ export class UsersService {
     return this.usersRepository.count();
   }
 
-  async getProfile(userId: number) {
+  async getProfile(userId: number): Promise<IUser> {
     if (!userId) {
       throw new NotFoundException('Kullanıcı bulunamadı');
     }
@@ -59,26 +62,17 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('Kullanıcı bulunamadı');
     }
-    const {
-      id,
-      email,
-      name,
-      surname,
-      role,
-      phoneNumber,
-      birthDate,
-      profilePic,
-    } = user;
-    return {
-      id,
-      email,
-      name,
-      surname,
-      role,
-      phoneNumber,
-      birthDate,
-      profilePic,
+    const userData: IUser = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      surname: user.surname,
+      profilePic: user.profilePic,
+      role: user.role,
+      phoneNumber: user.phoneNumber,
+      birthDate: user.birthDate,
     };
+    return userData;
   }
 
   async updateProfile(userId: number, updateData: Partial<User>) {
@@ -94,6 +88,13 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException('Kullanıcı bulunamadı');
+    }
+    // Eski avatar varsa sil
+    if (user.profilePic) {
+      const filePath = path.join(__dirname, '..', '..', '..', user.profilePic);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath); // dosyayı sil
+      }
     }
     user.profilePic = profilePicPath;
     return this.usersRepository.save(user);
