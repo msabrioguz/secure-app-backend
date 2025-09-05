@@ -29,4 +29,7 @@ export class User extends BaseEntity {
 
   @Column({ type: 'longtext' })
   refreshToken: string;
+
+  @Column({ nullable: true })
+  lastLogon: Date;
 }

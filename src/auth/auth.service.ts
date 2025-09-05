@@ -33,8 +33,10 @@ export class AuthService {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new UnauthorizedException('Invalid credentials');
 
+    await this.usersService.updateLastLogon(user.id);
     const tokens = await this.generateTokens(user);
     await this.usersService.updateRefreshToken(user.id, tokens.refresh_token);
+
     return tokens;
   }
 

@@ -44,6 +44,12 @@ export class UsersService {
     await this.usersRepository.update(userId, { refreshToken: refreshToken });
   }
 
+  async updateLastLogon(userId: number) {
+    await this.usersRepository.update(userId, {
+      lastLogon: new Date(),
+    });
+  }
+
   async removeRefreshToken(userId: number) {
     await this.usersRepository.update(userId, {
       refreshToken: '',
