@@ -26,18 +26,23 @@ export class AuthService {
     return new BaseResponse(201, true, ResponseMessages.USER_CREATED);
   }
 
-  async login(email: string, password: string) {
+  async login(user: User) {
+    // Todo: Bu satır silinecek
+    // await this.usersService.updateLastLogon(user.id);
+    const tokens = await this.generateTokens(user);
+    await this.usersService.updateRefreshToken(user.id, tokens.refresh_token);
+
+    return tokens;
+  }
+
+  async validateUser(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
     if (!user) throw new UnauthorizedException('User not found');
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new UnauthorizedException('Invalid credentials');
 
-    await this.usersService.updateLastLogon(user.id);
-    const tokens = await this.generateTokens(user);
-    await this.usersService.updateRefreshToken(user.id, tokens.refresh_token);
-
-    return tokens;
+    return user;
   }
 
   async generateTokens(user: User) {

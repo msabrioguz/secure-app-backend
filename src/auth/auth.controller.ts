@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Post,
+  Req,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -12,10 +13,15 @@ import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { GetUser } from '_common/decorators/get-user.decorator';
 import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
+import { LoginAttemptsService } from './login-attemps.service';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private loginAttemptsService: LoginAttemptsService,
+  ) {}
 
   @UsePipes(ValidationPipe)
   @Post('register')
@@ -30,8 +36,33 @@ export class AuthController {
 
   @UsePipes(ValidationPipe)
   @Post('login')
-  login(@Body() body: LoginDto) {
-    return this.authService.login(body.email, body.password);
+  async login(@Body() body: LoginDto, @Req() req: Request) {
+    try {
+      const user = await this.authService.validateUser(
+        body.email,
+        body.password,
+      );
+      const tokens = await this.authService.login(user);
+
+      await this.loginAttemptsService.recordAttempt(
+        body.email,
+        true,
+        req.ip || '',
+        req.headers['user-agent'] || '',
+        user,
+      );
+
+      return tokens;
+    } catch (error) {
+      await this.loginAttemptsService.recordAttempt(
+        body.email,
+        false,
+        req.ip || '',
+        req.headers['user-agent'] || '',
+      );
+
+      throw error;
+    }
   }
 
   @UseGuards(JwtRefreshGuard)
