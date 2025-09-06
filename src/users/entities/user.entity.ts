@@ -1,5 +1,6 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
-import { Entity, Column } from 'typeorm';
+import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
+import { Entity, Column, OneToMany } from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity {
@@ -30,6 +31,12 @@ export class User extends BaseEntity {
   @Column({ type: 'longtext' })
   refreshToken: string;
 
-  @Column({ nullable: true })
-  lastLogon: Date;
+  @Column({ default: false })
+  isLocked: boolean;
+
+  @Column({ type: 'timestamp', nullable: true })
+  lockedUntil: Date | null;
+
+  @OneToMany(() => LogonHistory, (attempt) => attempt.user)
+  attempts: LogonHistory[];
 }

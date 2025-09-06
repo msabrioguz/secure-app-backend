@@ -44,12 +44,6 @@ export class UsersService {
     await this.usersRepository.update(userId, { refreshToken: refreshToken });
   }
 
-  async updateLastLogon(userId: number) {
-    await this.usersRepository.update(userId, {
-      lastLogon: new Date(),
-    });
-  }
-
   async removeRefreshToken(userId: number) {
     await this.usersRepository.update(userId, {
       refreshToken: '',
@@ -103,6 +97,10 @@ export class UsersService {
       }
     }
     user.profilePic = profilePicPath;
+    return this.usersRepository.save(user);
+  }
+
+  save(user: User): Promise<User> {
     return this.usersRepository.save(user);
   }
 }

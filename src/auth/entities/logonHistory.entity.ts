@@ -17,6 +17,6 @@ export class LogonHistory extends BaseEntity {
   userAgent: string;
 
   // Relations
-  @ManyToOne(() => User, { nullable: true, eager: true })
+  @ManyToOne(() => User, (user) => user.attempts, { onDelete: 'CASCADE' })
   user: User | null;
 }

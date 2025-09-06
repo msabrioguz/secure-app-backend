@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LogonHistory } from './entities/logonHistory.entity';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
@@ -41,5 +41,14 @@ export class LoginAttemptsService {
       where: { ipAddress: ip, success: false },
       order: { createdAt: 'DESC' },
     });
+  }
+
+  async countFailedAttempts(email: string, minutes: number): Promise<number> {
+    const since = new Date(Date.now() - minutes * 60 * 1000);
+    const attempt = await this.loginAttemptRepo.count({
+      where: { email: email, success: false, createdAt: MoreThan(since) },
+    });
+    console.log(attempt);
+    return attempt;
   }
 }

@@ -37,32 +37,14 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   @Post('login')
   async login(@Body() body: LoginDto, @Req() req: Request) {
-    try {
-      const user = await this.authService.validateUser(
-        body.email,
-        body.password,
-      );
-      const tokens = await this.authService.login(user);
+    const user = await this.authService.validateUser(
+      body.email,
+      body.password,
+      req,
+    );
+    const tokens = await this.authService.login(user);
 
-      await this.loginAttemptsService.recordAttempt(
-        body.email,
-        true,
-        req.ip || '',
-        req.headers['user-agent'] || '',
-        user,
-      );
-
-      return tokens;
-    } catch (error) {
-      await this.loginAttemptsService.recordAttempt(
-        body.email,
-        false,
-        req.ip || '',
-        req.headers['user-agent'] || '',
-      );
-
-      throw error;
-    }
+    return tokens;
   }
 
   @UseGuards(JwtRefreshGuard)

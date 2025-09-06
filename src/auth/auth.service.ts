@@ -6,6 +6,8 @@ import { ConfigService } from '@nestjs/config';
 import { User } from 'src/users/entities/user.entity';
 import { BaseResponse } from '_base/response/base.response';
 import { ResponseMessages } from '_base/enum/ResponseMessages.enum';
+import { LoginAttemptsService } from './login-attemps.service';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +15,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private loginAttempsService: LoginAttemptsService,
   ) {}
 
   async register(
@@ -27,20 +30,65 @@ export class AuthService {
   }
 
   async login(user: User) {
-    // Todo: Bu satır silinecek
-    // await this.usersService.updateLastLogon(user.id);
     const tokens = await this.generateTokens(user);
     await this.usersService.updateRefreshToken(user.id, tokens.refresh_token);
 
     return tokens;
   }
 
-  async validateUser(email: string, password: string) {
+  async validateUser(email: string, password: string, req: Request) {
     const user = await this.usersService.findByEmail(email);
     if (!user) throw new UnauthorizedException('User not found');
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) throw new UnauthorizedException('Invalid credentials');
+    if (user.isLocked && user.lockedUntil && user.lockedUntil > new Date()) {
+      throw new UnauthorizedException(
+        'Hesap geçici olarak kilitlendi. Lütfen daha sonra tekrar deneyin.',
+      );
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      await this.loginAttempsService.recordAttempt(
+        email,
+        false,
+        req.ip || '',
+        req.headers['user-agent'] || '',
+        user,
+      );
+
+      const attemps = await this.loginAttempsService.countFailedAttempts(
+        email,
+        15,
+      );
+
+      console.log('Deneme sayısı: ' + attemps);
+
+      if (attemps >= 5) {
+        user.isLocked = true;
+        user.lockedUntil = new Date(Date.now() + 15 * 60 * 1000); // 15 dk kilit
+        await this.usersService.save(user);
+
+        throw new UnauthorizedException(
+          `Çok fazla hatalı giriş yapıldı. Hesap 15 dakika kilitlendi.`,
+        );
+      }
+
+      throw new UnauthorizedException('Email veya şifre hatalı.');
+    }
+
+    await this.loginAttempsService.recordAttempt(
+      email,
+      true,
+      req.ip || '',
+      req.headers['user-agent'] || '',
+      user,
+    );
+
+    if (user.isLocked) {
+      user.isLocked = false;
+      user.lockedUntil = null;
+      await this.usersService.save(user);
+    }
 
     return user;
   }
