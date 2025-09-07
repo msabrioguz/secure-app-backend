@@ -1,4 +1,5 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
+import { Role } from '_base/enum/role.enum';
 import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 
@@ -25,8 +26,8 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   profilePic: string;
 
-  @Column({ default: 'user' })
-  role: string;
+  @Column({ default: Role.USER })
+  role: Role;
 
   @Column({ type: 'longtext' })
   refreshToken: string;
