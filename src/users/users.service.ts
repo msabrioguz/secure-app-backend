@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { IUser } from '_common/interfaces/IUser.interface';
 import * as fs from 'fs';
 import * as path from 'path';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -102,5 +103,18 @@ export class UsersService {
 
   save(user: User): Promise<User> {
     return this.usersRepository.save(user);
+  }
+
+  async getAllUsers(): Promise<UserResponseDto[]> {
+    const users = await this.usersRepository.find();
+    return users.map((u) => ({
+      id: u.id,
+      name: u.name,
+      surname: u.surname,
+      email: u.email,
+      role: u.role,
+      profilePic: u.profilePic,
+      createdAt: u.createdAt,
+    }));
   }
 }

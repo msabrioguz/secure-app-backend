@@ -16,6 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { IUser } from '_common/interfaces/IUser.interface';
+import { UserResponseDto } from './dto/user-response.dto';
 
 interface AuthenticatedRequest extends Request {
   user: IUser;
@@ -89,5 +90,11 @@ export class UsersController {
       message: 'Profile picture uploaded successfully',
       filePath: `/uploads/avatars/${file.filename}`,
     };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('getAllUsers')
+  async getAllUsers(): Promise<UserResponseDto[]> {
+    return await this.usersService.getAllUsers();
   }
 }
