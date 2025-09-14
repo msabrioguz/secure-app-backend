@@ -8,6 +8,7 @@ import {
   UseInterceptors,
   Post,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { UsersService } from './users.service';
@@ -16,7 +17,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { IUser } from '_common/interfaces/IUser.interface';
-import { UserResponseDto } from './dto/user-response.dto';
 
 interface AuthenticatedRequest extends Request {
   user: IUser;
@@ -94,7 +94,15 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('getAllUsers')
-  async getAllUsers(): Promise<UserResponseDto[]> {
-    return await this.usersService.getAllUsers();
+  async getAllUsers(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Query('search') search = '',
+  ) {
+    return await this.usersService.getAllUsers(
+      Number(page),
+      Number(limit),
+      search,
+    );
   }
 }

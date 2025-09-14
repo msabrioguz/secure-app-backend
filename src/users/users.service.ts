@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { IUser } from '_common/interfaces/IUser.interface';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -105,16 +105,30 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async getAllUsers(): Promise<UserResponseDto[]> {
-    const users = await this.usersRepository.find();
-    return users.map((u) => ({
-      id: u.id,
-      name: u.name,
-      surname: u.surname,
-      email: u.email,
-      role: u.role,
-      profilePic: u.profilePic,
-      createdAt: u.createdAt,
-    }));
+  async getAllUsers(
+    page = 1,
+    limit = 10,
+    search = '',
+  ): Promise<{ data: UserResponseDto[]; total: number }> {
+    const [users, total] = await this.usersRepository.findAndCount({
+      where: search
+        ? [{ name: Like(`%${search}%`) }, { email: Like(`%${search}%`) }]
+        : {},
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { id: 'ASC' },
+    });
+    return {
+      data: users.map((u) => ({
+        id: u.id,
+        name: u.name,
+        surname: u.surname,
+        email: u.email,
+        role: u.role,
+        profilePic: u.profilePic,
+        createdAt: u.createdAt,
+      })),
+      total,
+    };
   }
 }
