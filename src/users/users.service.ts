@@ -24,6 +24,7 @@ export class UsersService {
       password,
       name,
       surname,
+      refreshToken: '',
     });
     return this.usersRepository.save(user);
   }
@@ -116,7 +117,7 @@ export class UsersService {
         : {},
       skip: (page - 1) * limit,
       take: limit,
-      order: { id: 'ASC' },
+      order: { id: 'DESC' },
     });
     return {
       data: users.map((u) => ({
