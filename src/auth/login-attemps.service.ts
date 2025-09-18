@@ -51,4 +51,19 @@ export class LoginAttemptsService {
     console.log(attempt);
     return attempt;
   }
+
+  async getUserAttempts(userId: number) {
+    return this.loginAttemptRepo.find({
+      where: { user: { id: userId } },
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+    });
+  }
+
+  async getAllAttempts() {
+    return this.loginAttemptRepo.find({
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+    });
+  }
 }

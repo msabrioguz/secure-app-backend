@@ -17,6 +17,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { IUser } from '_common/interfaces/IUser.interface';
+import { User } from './entities/user.entity';
 
 interface AuthenticatedRequest extends Request {
   user: IUser;
@@ -45,17 +46,14 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('Profile')
-  getProfilePage(@GetUser('id') userId: number) {
-    return this.usersService.getProfile(userId);
+  getProfilePage(@GetUser() user: User) {
+    return this.usersService.getProfile(user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch('Profile')
-  updateProfile(
-    @Body() updateData: Partial<IUser>,
-    @GetUser('id') userId: number,
-  ) {
-    return this.usersService.updateProfile(userId, updateData);
+  updateProfile(@Body() updateData: Partial<IUser>, @GetUser() user: User) {
+    return this.usersService.updateProfile(user.id, updateData);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -81,11 +79,11 @@ export class UsersController {
   )
   async uploadProfilePic(
     @UploadedFile() file: Express.Multer.File,
-    @GetUser('id') userId: number,
+    @GetUser() user: User,
   ) {
     // Burada DB'de user tablosuna path kaydedebilirsiniz
     const filePath = `/uploads/avatars/${file.filename}`;
-    await this.usersService.updateProfilePic(userId, filePath);
+    await this.usersService.updateProfilePic(user.id, filePath);
     return {
       message: 'Profile picture uploaded successfully',
       filePath: `/uploads/avatars/${file.filename}`,
