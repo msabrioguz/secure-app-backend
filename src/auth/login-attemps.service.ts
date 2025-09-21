@@ -53,17 +53,50 @@ export class LoginAttemptsService {
   }
 
   async getUserAttempts(userId: number) {
-    return this.loginAttemptRepo.find({
+    const attempts = await this.loginAttemptRepo.find({
       where: { user: { id: userId } },
       relations: ['user'],
       order: { createdAt: 'DESC' },
     });
+
+    return attempts.map((attempt) => ({
+      id: attempt.id,
+      email: attempt.email,
+      success: attempt.success,
+      ipAddress: attempt.ipAddress,
+      userAgent: attempt.userAgent,
+      createdAt: attempt.createdAt,
+      user: attempt.user
+        ? {
+            email: attempt.user.email,
+            role: attempt.user.role,
+            profilePic: attempt.user.profilePic,
+          }
+        : null,
+    }));
   }
 
   async getAllAttempts() {
-    return this.loginAttemptRepo.find({
+    const attempts = await this.loginAttemptRepo.find({
       relations: ['user'],
       order: { createdAt: 'DESC' },
+      take: 10, // son 10 giriş
     });
+
+    return attempts.map((attempt) => ({
+      id: attempt.id,
+      email: attempt.email,
+      success: attempt.success,
+      ipAddress: attempt.ipAddress,
+      userAgent: attempt.userAgent,
+      createdAt: attempt.createdAt,
+      user: attempt.user
+        ? {
+            email: attempt.user.email,
+            role: attempt.user.role,
+            profilePic: attempt.user.profilePic,
+          }
+        : null,
+    }));
   }
 }
