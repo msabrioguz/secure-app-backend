@@ -7,9 +7,9 @@ import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import jwtConfig from '_common/config/jwt.config';
 import { JwtRefreshStrategy } from './refresh-token.strategy';
-import { LoginAttemptsService } from './login-attemps.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LogonHistory } from './entities/logonHistory.entity';
+import { LoginAttemptsService } from 'src/users/login-attemps.service';
 
 @Module({
   imports: [

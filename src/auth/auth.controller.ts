@@ -13,8 +13,8 @@ import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { GetUser } from '_common/decorators/get-user.decorator';
 import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
-import { LoginAttemptsService } from './login-attemps.service';
 import { Request } from 'express';
+import { LoginAttemptsService } from 'src/users/login-attemps.service';
 
 @Controller('auth')
 export class AuthController {

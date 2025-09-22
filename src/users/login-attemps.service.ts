@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LogonHistory } from './entities/logonHistory.entity';
 import { MoreThan, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
+import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
 
 @Injectable()
 export class LoginAttemptsService {

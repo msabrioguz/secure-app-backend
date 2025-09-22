@@ -1,10 +1,10 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetUser } from '_common/decorators/get-user.decorator';
-import { LoginAttemptsService } from 'src/auth/login-attemps.service';
 import { User } from './entities/user.entity';
 import { RolesGuard } from './guard/roles.guard';
 import { Roles } from '_common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { LoginAttemptsService } from './login-attemps.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('logonHistory')

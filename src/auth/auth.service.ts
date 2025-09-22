@@ -6,8 +6,8 @@ import { ConfigService } from '@nestjs/config';
 import { User } from 'src/users/entities/user.entity';
 import { BaseResponse } from '_base/response/base.response';
 import { ResponseMessages } from '_base/enum/ResponseMessages.enum';
-import { LoginAttemptsService } from './login-attemps.service';
 import { Request } from 'express';
+import { LoginAttemptsService } from 'src/users/login-attemps.service';
 
 @Injectable()
 export class AuthService {
