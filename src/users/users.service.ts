@@ -106,6 +106,8 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
+  // Kullanıcıların Listelenmesi
+  // TODO: Arama kriterinde en az 3 karakter varsa çalışması gerekiyor.
   async getAllUsers(
     page = 1,
     limit = 10,
