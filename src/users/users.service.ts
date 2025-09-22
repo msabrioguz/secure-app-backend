@@ -138,4 +138,12 @@ export class UsersService {
       total,
     };
   }
+
+  // Son Kayıt Olan 10 Kullanıcı
+  async getLastRegisterUsers() {
+    return this.usersRepository.find({
+      order: { createdAt: 'DESC' },
+      take: 10,
+    });
+  }
 }

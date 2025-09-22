@@ -103,4 +103,10 @@ export class UsersController {
       search,
     );
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('GetLastRegisterUsers')
+  async getLastRegisterUsers() {
+    return this.usersService.getLastRegisterUsers();
+  }
 }
