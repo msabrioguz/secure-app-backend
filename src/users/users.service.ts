@@ -113,7 +113,11 @@ export class UsersService {
   ): Promise<{ data: UserResponseDto[]; total: number }> {
     const [users, total] = await this.usersRepository.findAndCount({
       where: search
-        ? [{ name: Like(`%${search}%`) }, { email: Like(`%${search}%`) }]
+        ? [
+            { name: Like(`%${search}%`) },
+            { surname: Like(`%${search}%`) },
+            { email: Like(`%${search}%`) },
+          ]
         : {},
       skip: (page - 1) * limit,
       take: limit,
