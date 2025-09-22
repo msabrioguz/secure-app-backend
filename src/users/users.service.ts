@@ -141,9 +141,17 @@ export class UsersService {
 
   // Son Kayıt Olan 10 Kullanıcı
   async getLastRegisterUsers() {
-    return this.usersRepository.find({
-      order: { createdAt: 'DESC' },
+    const data = await this.usersRepository.find({
       take: 10,
+      order: { id: 'DESC' },
     });
+
+    return data.map((user) => ({
+      id: user.id,
+      profilePic: user.profilePic,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+    }));
   }
 }
