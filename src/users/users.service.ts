@@ -151,6 +151,7 @@ export class UsersService {
       profilePic: user.profilePic,
       email: user.email,
       role: user.role,
+      status: user.status,
       createdAt: user.createdAt,
     }));
   }

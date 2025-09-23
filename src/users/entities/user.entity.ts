@@ -1,5 +1,6 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
 import { Role } from '_base/enum/role.enum';
+import { UserStatus } from '_base/enum/userStatus.enum';
 import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 
@@ -28,6 +29,9 @@ export class User extends BaseEntity {
 
   @Column({ default: Role.USER })
   role: Role;
+
+  @Column({ default: UserStatus.PASSIVE })
+  status: UserStatus;
 
   @Column({ type: 'longtext' })
   refreshToken: string;
