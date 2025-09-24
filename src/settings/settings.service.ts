@@ -31,7 +31,7 @@ export class SettingsService {
     return `This action removes a #${id} setting`;
   }
 
-  // Tanımlanmış herhangi bir ayar profili tanımlanmış mı?
+  // Tanımlanmış herhangi bir ayar profili var mı?
   async isHasAnyProfil(): Promise<boolean> {
     try {
       const data: number = await this.settingRepository.count();
