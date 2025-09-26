@@ -1,15 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateSettingDto } from './dto/create-setting.dto';
 import { UpdateSettingDto } from './dto/update-setting.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Setting } from './entities/setting.entity';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+import { UserStatus } from '_base/enum/userStatus.enum';
 
 @Injectable()
-export class SettingsService {
+export class SettingsService implements OnModuleInit {
   constructor(
     @InjectRepository(Setting) private settingRepository: Repository<Setting>,
+    private configService: ConfigService,
   ) {}
+
+  async onModuleInit() {
+    const hasAny = await this.isHasAnyProfil();
+    if (!hasAny) {
+      await this.initialization();
+    }
+  }
 
   create(createSettingDto: CreateSettingDto) {
     return 'This action adds a new setting';
@@ -31,15 +41,43 @@ export class SettingsService {
     return `This action removes a #${id} setting`;
   }
 
-  // Tanımlanmış herhangi bir ayar profili var mı?
-  async isHasAnyProfil(): Promise<boolean> {
+  async initialization() {
     try {
-      const data: number = await this.settingRepository.count();
-      if (data > 0) return true;
-      else return false;
+      const data = {
+        name: 'Varsayılan Ayarlar',
+        title: this.configService.get<string>('app_name') || 'MSOApp',
+        appPort: this.configService.get<number>('app_port') || 3000,
+        maintenance:
+          this.configService.get<boolean>('app_maintenance') || false,
+        registerValidation:
+          this.configService.get<UserStatus>('app_register_validation') ||
+          UserStatus.ACTIVE,
+        emailService: this.configService.get<string>('email_service') || 'SMTP',
+        emailHost: this.configService.get<string>('email_host') || 'localhost',
+        emailPort: this.configService.get<number>('email_port') || 1234,
+        emailUser: this.configService.get<string>('email_user') || 'username',
+        emailPass: this.configService.get<string>('email_pass') || 'test',
+      };
+      await this.settingRepository.save(data);
     } catch (error) {
       console.log(error);
-      return false;
     }
+  }
+
+  // Tanımlanmış herhangi bir ayar profili var mı?
+  isHasAnyProfil(): Promise<boolean> {
+    return this.settingRepository
+      .count()
+      .then((count) => {
+        if (count > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return false;
+      });
   }
 }
