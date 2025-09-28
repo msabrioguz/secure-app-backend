@@ -1,7 +1,7 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
 import { Column, Entity } from 'typeorm';
 
-@Entity()
+@Entity('exchangerates')
 export class ExchangeRate extends BaseEntity {
   @Column()
   currency: string; // USD, EUR vs.

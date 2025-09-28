@@ -3,7 +3,7 @@ import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
 import { Game } from './game.entity';
 import { User } from 'src/users/entities/user.entity';
 
-@Entity()
+@Entity('platforms')
 export class Platform extends BaseEntity {
   @Column()
   name: string; // Steam, Xbox vs...

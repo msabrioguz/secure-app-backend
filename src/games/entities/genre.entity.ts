@@ -1,18 +1,10 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToMany,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, Column, ManyToMany, ManyToOne } from 'typeorm';
 import { Game } from './game.entity';
 import { User } from 'src/users/entities/user.entity';
+import { BaseEntity } from '_base/entitiy/base.entitiy';
 
 @Entity('genres')
-export class Genre {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Genre extends BaseEntity {
   @Column()
   name: string; // örn: Roguelike, Bullet Hell, Isometric
 

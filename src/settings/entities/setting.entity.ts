@@ -2,7 +2,7 @@ import { BaseEntity } from '_base/entitiy/base.entitiy';
 import { UserStatus } from '_base/enum/userStatus.enum';
 import { Column, Entity } from 'typeorm';
 
-@Entity()
+@Entity('settings')
 export class Setting extends BaseEntity {
   // Genel Ayarlar
   @Column()

@@ -2,7 +2,7 @@ import { BaseEntity } from '_base/entitiy/base.entitiy';
 import { NoteType, NotePeriodType } from '_base/enum/notes.enum';
 import { Column, Entity } from 'typeorm';
 
-@Entity()
+@Entity('notes')
 export class Note extends BaseEntity {
   @Column()
   title: string;

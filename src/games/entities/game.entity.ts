@@ -4,7 +4,7 @@ import { Platform } from './platform.entity';
 import { Genre } from './genre.entity';
 import { User } from 'src/users/entities/user.entity';
 
-@Entity()
+@Entity('games')
 export class Game extends BaseEntity {
   @Column()
   title: string;
