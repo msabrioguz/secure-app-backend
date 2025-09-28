@@ -1,5 +1,8 @@
 import { registerAs } from '@nestjs/config';
 import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
+import { ExchangeRate } from 'src/exchange-rate/entities/exchange-rate.entity';
+import { Game } from 'src/games/entities/game.entity';
+import { Note } from 'src/notes/entities/note.entity';
 import { Setting } from 'src/settings/entities/setting.entity';
 import { User } from 'src/users/entities/user.entity';
 
@@ -10,6 +13,6 @@ export default registerAs('database', () => ({
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASS,
   database: process.env.DATABASE_NAME,
-  entities: [User, LogonHistory, Setting],
+  entities: [User, LogonHistory, Setting, ExchangeRate, Game, Note],
   synchronize: true,
 }));

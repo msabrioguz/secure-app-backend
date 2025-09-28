@@ -9,6 +9,9 @@ import { DatabaseConfig } from '_common/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SettingsModule } from './settings/settings.module';
+import { GamesModule } from './games/games.module';
+import { NotesModule } from './notes/notes.module';
+import { ExchangeRateModule } from './exchange-rate/exchange-rate.module';
 
 @Module({
   imports: [
@@ -31,6 +34,9 @@ import { SettingsModule } from './settings/settings.module';
     UsersModule,
     AuthModule,
     SettingsModule,
+    GamesModule,
+    NotesModule,
+    ExchangeRateModule,
   ],
   controllers: [AppController],
   providers: [AppService],
