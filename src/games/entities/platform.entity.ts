@@ -19,5 +19,5 @@ export class Platform extends BaseEntity {
   games: Game[];
 
   @ManyToOne(() => User, (user) => user.platforms, { onDelete: 'SET NULL' })
-  addedBy: User;
+  userId: User;
 }

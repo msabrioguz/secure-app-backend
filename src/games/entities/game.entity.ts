@@ -45,5 +45,5 @@ export class Game extends BaseEntity {
 
   // Kullanıcı İlişkisi
   @ManyToOne(() => User, (user) => user.games, { onDelete: 'SET NULL' })
-  addedBy: User;
+  userId: User;
 }

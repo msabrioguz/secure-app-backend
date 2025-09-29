@@ -5,6 +5,7 @@ import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
 import { Game } from 'src/games/entities/game.entity';
 import { Genre } from 'src/games/entities/genre.entity';
 import { Platform } from 'src/games/entities/platform.entity';
+import { Note } from 'src/notes/entities/note.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 
 @Entity()
@@ -37,6 +38,9 @@ export class User extends BaseEntity {
   status: UserStatus;
 
   @Column({ type: 'longtext' })
+  token: string;
+
+  @Column({ type: 'longtext' })
   refreshToken: string;
 
   @Column({ default: false })
@@ -51,14 +55,18 @@ export class User extends BaseEntity {
   attempts: LogonHistory[];
 
   // Game
-  @OneToMany(() => Game, (game) => game.addedBy)
+  @OneToMany(() => Game, (game) => game.userId)
   games: Game[];
 
   // Platform
-  @OneToMany(() => Platform, (platform) => platform.addedBy)
+  @OneToMany(() => Platform, (platform) => platform.userId)
   platforms: Platform[];
 
   // Genre
-  @OneToMany(() => Genre, (genre) => genre.addedBy)
+  @OneToMany(() => Genre, (genre) => genre.userId)
   genres: Genre[];
+
+  // Notes
+  @OneToMany(() => Note, (note) => note.userId)
+  notes: Note[];
 }

@@ -1,6 +1,7 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
 import { NoteType, NotePeriodType } from '_base/enum/notes.enum';
-import { Column, Entity } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity('notes')
 export class Note extends BaseEntity {
@@ -18,4 +19,6 @@ export class Note extends BaseEntity {
   period: NotePeriodType;
 
   // TODO: İlişkisel Veritabanı ile Kullanıcı ilişkisi
+  @ManyToOne(() => User, (user) => user.notes, { onDelete: 'SET NULL' })
+  userId: User;
 }
