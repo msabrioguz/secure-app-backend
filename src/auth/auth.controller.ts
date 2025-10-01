@@ -12,13 +12,13 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
 import { Request } from 'express';
-import { LoginAttemptsService } from 'src/users/login-attemps.service';
+import { AuthHistoryService } from './authHistory.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private loginAttemptsService: LoginAttemptsService,
+    private authHistoryService: AuthHistoryService,
   ) {}
 
   @UsePipes(ValidationPipe)

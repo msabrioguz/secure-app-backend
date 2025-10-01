@@ -3,14 +3,15 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { LogonHistoryController } from './logonHistory.controller';
-import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
-import { LoginAttemptsService } from './login-attemps.service';
+
+import { AuthHistory } from 'src/auth/entities/authHistory.entity';
+import { AuthHistoryService } from 'src/auth/authHistory.service';
+import { AuthHistoryController } from 'src/auth/authHistory.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, LogonHistory])], // Add your entities here
-  providers: [UsersService, LoginAttemptsService],
-  controllers: [UsersController, LogonHistoryController],
+  imports: [TypeOrmModule.forFeature([User, AuthHistory])], // Add your entities here
+  providers: [UsersService, AuthHistoryService],
+  controllers: [UsersController, AuthHistoryController],
   exports: [UsersService], // Export UsersService if needed in other modules
 })
 export class UsersModule {}

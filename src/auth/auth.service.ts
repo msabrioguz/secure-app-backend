@@ -7,7 +7,7 @@ import { User } from 'src/users/entities/user.entity';
 import { BaseResponse } from '_base/response/base.response';
 import { ResponseMessages } from '_base/enum/ResponseMessages.enum';
 import { Request } from 'express';
-import { LoginAttemptsService } from 'src/users/login-attemps.service';
+import { AuthHistoryService } from './authHistory.service';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
-    private loginAttempsService: LoginAttemptsService,
+    private loginAttempsService: AuthHistoryService,
   ) {}
 
   async register(

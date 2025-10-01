@@ -3,7 +3,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
 
 @Entity()
-export class LogonHistory extends BaseEntity {
+export class AuthHistory extends BaseEntity {
   @Column({ nullable: true })
   email: string;
 

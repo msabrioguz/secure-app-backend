@@ -8,8 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import jwtConfig from '_common/config/jwt.config';
 import { JwtRefreshStrategy } from './refresh-token.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LogonHistory } from './entities/logonHistory.entity';
-import { LoginAttemptsService } from 'src/users/login-attemps.service';
+import { AuthHistory } from './entities/authHistory.entity';
+import { AuthHistoryService } from './authHistory.service';
 
 @Module({
   imports: [
@@ -23,14 +23,9 @@ import { LoginAttemptsService } from 'src/users/login-attemps.service';
         signOptions: { expiresIn: configService.get<string>('jwt.expiresIn') },
       }),
     }),
-    TypeOrmModule.forFeature([LogonHistory]),
+    TypeOrmModule.forFeature([AuthHistory]),
   ],
-  providers: [
-    LoginAttemptsService,
-    AuthService,
-    JwtStrategy,
-    JwtRefreshStrategy,
-  ],
+  providers: [AuthHistoryService, AuthService, JwtStrategy, JwtRefreshStrategy],
   controllers: [AuthController],
   exports: [JwtModule],
 })

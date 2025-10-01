@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
+import { AuthHistory } from 'src/auth/entities/authHistory.entity';
 
 @Injectable()
-export class LoginAttemptsService {
+export class AuthHistoryService {
   constructor(
-    @InjectRepository(LogonHistory)
-    private readonly loginAttemptRepo: Repository<LogonHistory>,
+    @InjectRepository(AuthHistory)
+    private readonly authHistoryRepo: Repository<AuthHistory>,
   ) {}
 
   async recordAttempt(
@@ -18,7 +18,7 @@ export class LoginAttemptsService {
     userAgent: string,
     user?: User,
   ) {
-    const attempt = this.loginAttemptRepo.create({
+    const attempt = this.authHistoryRepo.create({
       email,
       success,
       ipAddress,
@@ -26,18 +26,18 @@ export class LoginAttemptsService {
       user: user || null,
     });
 
-    return this.loginAttemptRepo.save(attempt);
+    return this.authHistoryRepo.save(attempt);
   }
 
   async getAttemptsByUser(userId: number) {
-    return this.loginAttemptRepo.find({
+    return this.authHistoryRepo.find({
       where: { id: userId },
       order: { createdAt: 'DESC' },
     });
   }
 
   async getFailedAttemptsByIp(ip: string) {
-    return this.loginAttemptRepo.find({
+    return this.authHistoryRepo.find({
       where: { ipAddress: ip, success: false },
       order: { createdAt: 'DESC' },
     });
@@ -45,7 +45,7 @@ export class LoginAttemptsService {
 
   async countFailedAttempts(email: string, minutes: number): Promise<number> {
     const since = new Date(Date.now() - minutes * 60 * 1000);
-    const attempt = await this.loginAttemptRepo.count({
+    const attempt = await this.authHistoryRepo.count({
       where: { email: email, success: false, createdAt: MoreThan(since) },
     });
     console.log(attempt);
@@ -53,7 +53,7 @@ export class LoginAttemptsService {
   }
 
   async getUserAttempts(userId: number) {
-    const attempts = await this.loginAttemptRepo.find({
+    const attempts = await this.authHistoryRepo.find({
       where: { user: { id: userId } },
       relations: ['user'],
       order: { createdAt: 'DESC' },
@@ -77,7 +77,7 @@ export class LoginAttemptsService {
   }
 
   async getAllAttempts() {
-    const attempts = await this.loginAttemptRepo.find({
+    const attempts = await this.authHistoryRepo.find({
       relations: ['user'],
       order: { createdAt: 'DESC' },
       take: 10, // son 10 giriş

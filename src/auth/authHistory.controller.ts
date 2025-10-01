@@ -1,20 +1,20 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetUser } from '_common/decorators/get-user.decorator';
-import { User } from './entities/user.entity';
-import { RolesGuard } from './guard/roles.guard';
 import { Roles } from '_common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
-import { LoginAttemptsService } from './login-attemps.service';
+import { AuthHistoryService } from './authHistory.service';
+import { User } from 'src/users/entities/user.entity';
+import { RolesGuard } from 'src/users/guard/roles.guard';
 
 @UseGuards(JwtAuthGuard)
-@Controller('logonHistory')
-export class LogonHistoryController {
-  constructor(private readonly logonHistoryService: LoginAttemptsService) {}
+@Controller('authHistory')
+export class AuthHistoryController {
+  constructor(private readonly authHistoryService: AuthHistoryService) {}
 
   // Kullanıcılar kendi girişlerini görebilir
   @Get('getUser')
   async getMyAttempts(@GetUser() user: User) {
-    return this.logonHistoryService.getUserAttempts(user.id);
+    return this.authHistoryService.getUserAttempts(user.id);
   }
 
   // Adminler tüm yapılmış girişleri görür
@@ -22,6 +22,6 @@ export class LogonHistoryController {
   @Roles('admin')
   @Get('getAll')
   async getAllAttempts() {
-    return this.logonHistoryService.getAllAttempts();
+    return this.authHistoryService.getAllAttempts();
   }
 }

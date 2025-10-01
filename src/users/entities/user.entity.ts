@@ -1,7 +1,7 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
 import { Role } from '_base/enum/role.enum';
 import { UserStatus } from '_base/enum/userStatus.enum';
-import { LogonHistory } from 'src/auth/entities/logonHistory.entity';
+import { AuthHistory } from 'src/auth/entities/authHistory.entity';
 import { Game } from 'src/games/entities/game.entity';
 import { Genre } from 'src/games/entities/genre.entity';
 import { Platform } from 'src/games/entities/platform.entity';
@@ -59,8 +59,8 @@ export class User extends BaseEntity {
 
   // İlişkiler
   // Kullanıcı giriş tarihi
-  @OneToMany(() => LogonHistory, (attempt) => attempt.user)
-  attempts: LogonHistory[];
+  @OneToMany(() => AuthHistory, (attempt) => attempt.user)
+  attempts: AuthHistory[];
 
   // Game
   @OneToMany(() => Game, (game) => game.userId)
