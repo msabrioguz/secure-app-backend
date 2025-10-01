@@ -10,8 +10,6 @@ import {
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { JwtAuthGuard } from './guard/jwt-auth.guard';
-import { GetUser } from '_common/decorators/get-user.decorator';
 import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
 import { Request } from 'express';
 import { LoginAttemptsService } from 'src/users/login-attemps.service';
@@ -54,10 +52,8 @@ export class AuthController {
     return this.authService.refreshTokens(refreshToken);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
   @Post('logout')
-  logout(@GetUser('id') userId: number) {
-    return this.authService.logout(userId);
+  logout(@Body('id') id: number, @Body('refreshToken') refreshToken: string) {
+    return this.authService.logout(id, refreshToken);
   }
 }

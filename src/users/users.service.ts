@@ -155,4 +155,16 @@ export class UsersService {
       createdAt: user.createdAt,
     }));
   }
+
+  async findByIdWithToken(userId: number, token: string): Promise<boolean> {
+    const result = await this.usersRepository.find({
+      where: { id: userId, refreshToken: token },
+    });
+
+    if (result.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

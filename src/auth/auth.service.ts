@@ -140,8 +140,14 @@ export class AuthService {
     }
   }
 
-  async logout(userId: number) {
-    await this.usersService.removeRefreshToken(userId); // TODO: userId boş gelebiliyor. Bunu düzelt.
-    return new BaseResponse(200, true, ResponseMessages.LOGOUT);
+  async logout(userId: number, token: string) {
+    const result = await this.usersService.findByIdWithToken(userId, token);
+    if (result) {
+      await this.usersService.removeRefreshToken(userId);
+      await this.usersService.removeRefreshToken(userId); // TODO: userId boş gelebiliyor. Bunu düzelt.
+      return new BaseResponse(200, true, ResponseMessages.LOGOUT);
+    } else {
+      return new BaseResponse(500, false, ResponseMessages.LOGOUT);
+    }
   }
 }
