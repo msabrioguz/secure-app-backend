@@ -1,5 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { AuthHistory } from 'src/auth/entities/authHistory.entity';
+import { UserTokens } from 'src/auth/entities/userTokens.entity';
 import { ExchangeRate } from 'src/exchange-rate/entities/exchange-rate.entity';
 import { Game } from 'src/games/entities/game.entity';
 import { Genre } from 'src/games/entities/genre.entity';
@@ -24,6 +25,7 @@ export default registerAs('database', () => ({
     Note,
     Platform,
     Genre,
+    UserTokens,
   ],
   synchronize: true,
 }));

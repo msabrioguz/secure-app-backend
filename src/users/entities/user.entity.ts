@@ -2,6 +2,7 @@ import { BaseEntity } from '_base/entitiy/base.entitiy';
 import { Role } from '_base/enum/role.enum';
 import { UserRegisterStatus } from '_base/enum/userRegisterStatus.enum';
 import { AuthHistory } from 'src/auth/entities/authHistory.entity';
+import { UserTokens } from 'src/auth/entities/userTokens.entity';
 import { Game } from 'src/games/entities/game.entity';
 import { Genre } from 'src/games/entities/genre.entity';
 import { Platform } from 'src/games/entities/platform.entity';
@@ -77,4 +78,8 @@ export class User extends BaseEntity {
   // Notes
   @OneToMany(() => Note, (note) => note.userId)
   notes: Note[];
+
+  // Notes
+  @OneToMany(() => UserTokens, (token) => token.userId)
+  tokens: UserTokens[];
 }
