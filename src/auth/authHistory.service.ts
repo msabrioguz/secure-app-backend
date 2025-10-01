@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { AuthHistory } from 'src/auth/entities/authHistory.entity';
+import { UserLogon } from '_base/enum/userLogon.enum';
 
 @Injectable()
 export class AuthHistoryService {
@@ -13,14 +14,14 @@ export class AuthHistoryService {
 
   async recordAttempt(
     email: string,
-    success: boolean,
+    status: UserLogon,
     ipAddress: string,
     userAgent: string,
     user?: User,
   ) {
     const attempt = this.authHistoryRepo.create({
       email,
-      success,
+      status,
       ipAddress,
       userAgent,
       user: user || null,
@@ -38,7 +39,7 @@ export class AuthHistoryService {
 
   async getFailedAttemptsByIp(ip: string) {
     return this.authHistoryRepo.find({
-      where: { ipAddress: ip, success: false },
+      where: { ipAddress: ip, status: UserLogon.FAILED },
       order: { createdAt: 'DESC' },
     });
   }
@@ -46,7 +47,11 @@ export class AuthHistoryService {
   async countFailedAttempts(email: string, minutes: number): Promise<number> {
     const since = new Date(Date.now() - minutes * 60 * 1000);
     const attempt = await this.authHistoryRepo.count({
-      where: { email: email, success: false, createdAt: MoreThan(since) },
+      where: {
+        email: email,
+        status: UserLogon.FAILED,
+        createdAt: MoreThan(since),
+      },
     });
     console.log(attempt);
     return attempt;
@@ -62,7 +67,7 @@ export class AuthHistoryService {
     return attempts.map((attempt) => ({
       id: attempt.id,
       email: attempt.email,
-      success: attempt.success,
+      status: attempt.status,
       ipAddress: attempt.ipAddress,
       userAgent: attempt.userAgent,
       createdAt: attempt.createdAt,
@@ -86,7 +91,7 @@ export class AuthHistoryService {
     return attempts.map((attempt) => ({
       id: attempt.id,
       email: attempt.email,
-      success: attempt.success,
+      status: attempt.status,
       ipAddress: attempt.ipAddress,
       userAgent: attempt.userAgent,
       createdAt: attempt.createdAt,

@@ -1,6 +1,6 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
 import { Role } from '_base/enum/role.enum';
-import { UserStatus } from '_base/enum/userStatus.enum';
+import { UserRegisterStatus } from '_base/enum/userRegisterStatus.enum';
 import { AuthHistory } from 'src/auth/entities/authHistory.entity';
 import { Game } from 'src/games/entities/game.entity';
 import { Genre } from 'src/games/entities/genre.entity';
@@ -34,8 +34,8 @@ export class User extends BaseEntity {
   @Column({ default: Role.USER })
   role: Role;
 
-  @Column({ default: UserStatus.PASSIVE })
-  status: UserStatus;
+  @Column({ default: UserRegisterStatus.PASSIVE })
+  status: UserRegisterStatus;
 
   // TODO: Gerekli olup olmadığı sorgulamak lazım. Muhtemelen ayrı bir ilişkili tablo oluşturulacak.
   @Column({ type: 'longtext' })

@@ -1,4 +1,5 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
+import { UserLogon } from '_base/enum/userLogon.enum';
 import { User } from 'src/users/entities/user.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
 
@@ -7,8 +8,8 @@ export class AuthHistory extends BaseEntity {
   @Column({ nullable: true })
   email: string;
 
-  @Column({ default: false })
-  success: boolean;
+  @Column({ default: UserLogon.LOGOUT })
+  status: UserLogon;
 
   @Column({ nullable: true })
   ipAddress: string;

@@ -53,7 +53,11 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout(@Body('id') id: number, @Body('refreshToken') refreshToken: string) {
-    return this.authService.logout(id, refreshToken);
+  logout(
+    @Body('id') id: number,
+    @Body('refreshToken') refreshToken: string,
+    @Req() req: Request,
+  ) {
+    return this.authService.logout(id, refreshToken, req);
   }
 }

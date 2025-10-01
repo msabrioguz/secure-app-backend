@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Setting } from './entities/setting.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { UserStatus } from '_base/enum/userStatus.enum';
+import { UserRegisterStatus } from '_base/enum/userRegisterStatus.enum';
 
 @Injectable()
 export class SettingsService implements OnModuleInit {
@@ -21,6 +21,7 @@ export class SettingsService implements OnModuleInit {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   create(createSettingDto: CreateSettingDto) {
     return 'This action adds a new setting';
   }
@@ -33,6 +34,7 @@ export class SettingsService implements OnModuleInit {
     return `This action returns a #${id} setting`;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(id: number, updateSettingDto: UpdateSettingDto) {
     return `This action updates a #${id} setting`;
   }
@@ -50,8 +52,9 @@ export class SettingsService implements OnModuleInit {
         maintenance:
           this.configService.get<boolean>('app_maintenance') || false,
         registerValidation:
-          this.configService.get<UserStatus>('app_register_validation') ||
-          UserStatus.ACTIVE,
+          this.configService.get<UserRegisterStatus>(
+            'app_register_validation',
+          ) || UserRegisterStatus.ACTIVE,
         emailService: this.configService.get<string>('email_service') || 'SMTP',
         emailHost: this.configService.get<string>('email_host') || 'localhost',
         emailPort: this.configService.get<number>('email_port') || 1234,

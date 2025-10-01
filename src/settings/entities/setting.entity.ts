@@ -1,5 +1,5 @@
 import { BaseEntity } from '_base/entitiy/base.entitiy';
-import { UserStatus } from '_base/enum/userStatus.enum';
+import { UserRegisterStatus } from '_base/enum/userRegisterStatus.enum';
 import { Column, Entity } from 'typeorm';
 
 @Entity('settings')
@@ -17,8 +17,8 @@ export class Setting extends BaseEntity {
   @Column()
   appPort: number;
 
-  @Column({ default: UserStatus.PASSIVE })
-  registerValidation: UserStatus;
+  @Column({ default: UserRegisterStatus.PASSIVE })
+  registerValidation: UserRegisterStatus;
 
   // E-Posta Servis Ayarları
   @Column()

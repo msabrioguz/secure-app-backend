@@ -1,4 +1,4 @@
-export enum UserStatus {
+export enum UserRegisterStatus {
   PASSIVE = 1,
   EMAIL_CONFIRMATION = 2,
   ADMIN_CONFIRMATION = 3,

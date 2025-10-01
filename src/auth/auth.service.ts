@@ -8,6 +8,7 @@ import { BaseResponse } from '_base/response/base.response';
 import { ResponseMessages } from '_base/enum/ResponseMessages.enum';
 import { Request } from 'express';
 import { AuthHistoryService } from './authHistory.service';
+import { UserLogon } from '_base/enum/userLogon.enum';
 
 @Injectable()
 export class AuthService {
@@ -50,7 +51,7 @@ export class AuthService {
     if (!isPasswordValid) {
       await this.loginAttempsService.recordAttempt(
         email,
-        false,
+        UserLogon.FAILED,
         req.ip || '',
         req.headers['user-agent'] || '',
         user,
@@ -78,7 +79,7 @@ export class AuthService {
 
     await this.loginAttempsService.recordAttempt(
       email,
-      true,
+      UserLogon.LOGIN,
       req.ip || '',
       req.headers['user-agent'] || '',
       user,
@@ -140,10 +141,17 @@ export class AuthService {
     }
   }
 
-  async logout(userId: number, token: string) {
+  async logout(userId: number, token: string, req: Request) {
+    const user = await this.usersService.findById(userId);
     const result = await this.usersService.findByIdWithToken(userId, token);
     if (result) {
-      await this.usersService.removeRefreshToken(userId);
+      await this.loginAttempsService.recordAttempt(
+        user.email,
+        UserLogon.LOGOUT,
+        req.ip || '',
+        req.headers['user-agent'] || '',
+        user,
+      );
       await this.usersService.removeRefreshToken(userId); // TODO: userId boş gelebiliyor. Bunu düzelt.
       return new BaseResponse(200, true, ResponseMessages.LOGOUT);
     } else {
