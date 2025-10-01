@@ -37,13 +37,19 @@ export class User extends BaseEntity {
   @Column({ default: UserStatus.PASSIVE })
   status: UserStatus;
 
-  // TODO: Gerekli olup olmadığı sorgulamak lazım.
+  // TODO: Gerekli olup olmadığı sorgulamak lazım. Muhtemelen ayrı bir ilişkili tablo oluşturulacak.
   @Column({ type: 'longtext' })
   token: string;
+
+  @Column({ nullable: true })
+  tokenExpiresAt: Date;
 
   // TODO: Geçerli tarih ve saati eklenip, eklenmemesi gerektiğini düşünmek lazım.
   @Column({ type: 'longtext' })
   refreshToken: string;
+
+  @Column({ nullable: true })
+  refreshTokenExpiresAt: Date;
 
   @Column({ default: false })
   isLocked: boolean;
