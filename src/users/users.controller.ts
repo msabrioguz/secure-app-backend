@@ -9,6 +9,8 @@ import {
   Post,
   UploadedFile,
   Query,
+  Delete,
+  Param,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { UsersService } from './users.service';
@@ -18,6 +20,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { IUser } from '_common/interfaces/IUser.interface';
 import { User } from './entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 interface AuthenticatedRequest extends Request {
   user: IUser;
@@ -108,5 +111,18 @@ export class UsersController {
   @Get('GetLastRegisterUsers')
   async getLastRegisterUsers() {
     return this.usersService.getLastRegisterUsers();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateNoteDto: UpdateUserDto) {
+    return this.usersService.update(+id, updateNoteDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  remove(@Body('ids') ids: number[]) {
+    console.log(ids);
+    return this.usersService.remove(ids);
   }
 }

@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Like, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { IUser } from '_common/interfaces/IUser.interface';
 import * as fs from 'fs';
 import * as path from 'path';
 import { UserResponseDto } from './dto/user-response.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -165,6 +166,23 @@ export class UsersService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  async update(userId: number, data: UpdateUserDto) {
+    try {
+      await this.usersRepository.update(userId, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async remove(ids: number[]) {
+    try {
+      console.log(ids);
+      await this.usersRepository.delete({ id: In(ids) });
+    } catch (error) {
+      console.log(error);
     }
   }
 }
